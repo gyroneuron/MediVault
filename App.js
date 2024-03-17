@@ -1,13 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './screens/LoginScreen';
+import StartScreen from './screens/StartScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import HomeScreen from './screens/HomeScreen';
+import ForgotScreen from './screens/ForgotScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
+
 
 export default function App() {
+
+  const Stack = createNativeStackNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={'Start'}>
+
+        <Stack.Screen name='Start'component={StartScreen} options={{headerShown: false}} />
+        <Stack.Screen name='Login'component={LoginScreen} options={{headerShown: false}} />
+        <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}} />
+        <Stack.Screen name='Forgot' component={ForgotScreen}  options={{headerShown: false}}/>
+        <Stack.Screen name='ResetPassword' component={ResetPasswordScreen}  options={{headerShown: false}}/>
+        <Stack.Screen name='Home' component={HomeScreen}  options={{headerShown: false}}/>
+        
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
 const styles = StyleSheet.create({
