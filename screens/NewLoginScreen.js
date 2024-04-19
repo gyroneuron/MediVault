@@ -12,78 +12,54 @@ import {
   Platform,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import RegisterSvg from "../assets/svg/SignUp-person.svg";
+import LoginSvg from "../assets/svg/Login-person.svg";
 import Logo from "../assets/svg/Logo.svg";
-import { supabase } from '../lib/supabase';
+import { supabase } from "../supabase";
+
 
 const dimension = Dimensions.get("window");
 const Width = dimension.width;
 const Height = dimension.height;
 
-
-
-
-
-const RegisterScreen = ({ navigation }) => {
-
-  function generateUniqueID() {
-    const timestamp = new Date().getTime(); // Get current timestamp
-    const random = Math.random().toString(36).substr(2, 5); // Generate random string
-  
-    // Combine timestamp and random string to create unique ID
-    const uniqueID = `${timestamp}-${random}`;
-  
-    return uniqueID;
-  }
-  
-  // Example usage:
-  const uniqueID = generateUniqueID();
-  console.log(uniqueID); // Output: <timestamp>-<random>
-
-
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function signUpWithEmail() {
+  async function signInWithEmail() {
     setLoading(true);
-    
-    // Generate unique ID
-    const uniqueID = generateUniqueID();
-  
-    // Sign up user with Supabase
-    const { user, error } = await supabase.auth.signUp({ email, password });
-  
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
     if (error) {
-      Alert.alert(error.message);
-      setLoading(false);
+      Alert.alert("Wrong Credentials");
     } else {
-      // Insert user data including unique ID into Supabase database
-      const { data, error: insertError } = await supabase
-        .from('users')
-        .insert([{ email, unique_id: uniqueID }]);
-      
-      if (insertError) {
-        Alert.alert(insertError.message);
-        setLoading(false);
-      } else {
-        Alert.alert('SignUp Successful!\n Please Confirm your email');
-        setLoading(false);
-        navigation.navigate('Login');
-      }
+      setLoading(false);
+      Alert.alert("SignIn Successful!");
+      navigation.replace("Home");
     }
   }
+
+
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -100}
       >
         <View style={styles.container}>
           <View style={styles.topContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <Logo width={Width * 0.15} height={100} />
               <Text style={styles.heading}>
                 Medi
@@ -91,19 +67,18 @@ const RegisterScreen = ({ navigation }) => {
               </Text>
             </View>
           </View>
-          <Animatable.View
+          <View
             animation="fadeInDown"
             style={styles.middleContainer}
           >
-            <RegisterSvg width={Width * 0.7} height={Height * 0.4} />
-          </Animatable.View>
+            <LoginSvg width={Width * 0.85} height={Height * 0.4} />
+          </View>
 
-          <Animatable.View
+          <View
             animation="fadeInUp"
             style={styles.bottomContainer}
           >
-            <Text style={styles.subHeading}>Sign Up</Text>
-
+            <Text style={styles.subHeading}>SignIn</Text>
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -119,36 +94,35 @@ const RegisterScreen = ({ navigation }) => {
               secureTextEntry
             />
             <TouchableOpacity
+              onPress={signInWithEmail}
               disabled={loading}
-              onPress={signUpWithEmail}
               style={styles.button}
             >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "#ffffff",
-                }}
-              >
-                Register
-              </Text>
+              <Text style={{ fontSize: 16, color: "#ffffff" }}>Login</Text>
             </TouchableOpacity>
-          </Animatable.View>
-          <Animatable.Text
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Forgot")}
+              style={{ paddingTop: 10 }}
+            >
+              <Text style={{ color: "#007bff" }}>Forgot your password?</Text>
+            </TouchableOpacity>
+          </View>
+          <Text
             animation="fadeIn"
-            style={styles.loginText}
+            style={styles.registerText}
           >
-            Already a user?
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text style={styles.loginLink}> Login</Text>
+            Don't have an account?
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <Text style={styles.registerLink}> Register</Text>
             </TouchableOpacity>
-          </Animatable.Text>
+          </Text>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
-export default RegisterScreen;
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -189,14 +163,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  buttonContainer: {
-    borderRadius: 14,
-    width: Width * 0.85,
-    height: Height * 0.05,
-    backgroundColor: "#CCDBFD",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   bottomContainer: {
     flex: 1,
     backgroundColor: "#E2EAFC",
@@ -207,22 +173,17 @@ const styles = StyleSheet.create({
     padding: "5%",
   },
   heading: {
-
     fontSize: 30,
     fontWeight: "bold",
   },
   subHeading: {
     fontSize: 26,
-
   },
-
-  loginText: {
+  registerText: {
     fontSize: 16,
-
     marginTop: 20,
   },
-  loginLink: {
+  registerLink: {
     color: "#007bff",
-
   },
 });

@@ -15,7 +15,7 @@ const dimension = Dimensions.get("window");
 const Width = dimension.width;
 const Height = dimension.height;
 
-const StartScreen = ({ navigation }) => {
+const StartScreen1 = ({ navigation }) => {
   const fadeInAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const StartScreen = ({ navigation }) => {
   );
 };
 
-export default StartScreen;
+export default StartScreen1;
 
 const styles = StyleSheet.create({
   container: {

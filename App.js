@@ -3,7 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
-import StartScreen from './screens/StartScreen';
+import StartScreen1 from './screens/StartScreen1';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import ForgotScreen from './screens/ForgotScreen';
@@ -18,7 +18,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={'Start'}>
 
-        <Stack.Screen name='Start'component={StartScreen} options={{headerShown: false}} />
+        <Stack.Screen name='Start'component={StartScreen1} options={{headerShown: false}} />
         <Stack.Screen name='Login'component={LoginScreen} options={{headerShown: false}} />
         <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}} />
         <Stack.Screen name='Forgot' component={ForgotScreen}  options={{headerShown: false}}/>
