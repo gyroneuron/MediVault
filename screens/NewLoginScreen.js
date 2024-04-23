@@ -14,7 +14,7 @@ import {
 import * as Animatable from "react-native-animatable";
 import LoginSvg from "../assets/svg/Login-person.svg";
 import Logo from "../assets/svg/Logo.svg";
-import { supabase } from "../supabase";
+import { supabase } from "../lib/supabase";
 
 
 const dimension = Dimensions.get("window");
@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
     } else {
       setLoading(false);
       Alert.alert("SignIn Successful!");
-      navigation.replace("Home");
+      navigation.replace("Upload");
     }
   }
 
