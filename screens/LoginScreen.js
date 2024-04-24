@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
     } else {
       setLoading(false);
       Alert.alert("SignIn Successful!");
-      navigation.replace("Home");
+      navigation.replace("Upload");
     }
   }
 
