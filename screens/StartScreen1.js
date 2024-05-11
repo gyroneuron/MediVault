@@ -57,6 +57,17 @@ const StartScreen1 = ({ navigation }) => {
             </Animated.View>
           </TouchableOpacity>
         </View>
+        <View style={styles.bottomContainer2}>
+          <TouchableOpacity onPress={() => navigation.navigate("DoctorLogin")}>
+            <Animated.View
+              style={[styles.buttonContainer, { opacity: fadeInAnim }]}
+            >
+              <Text style={{ fontSize: 24, color: "#ffffff" }}>
+                Get Started!
+              </Text>
+            </Animated.View>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -94,6 +105,11 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  bottomContainer2: {
+    flex: 1,
+    alignItems: "bottom",
     justifyContent: "flex-end",
   },
   heading: {
