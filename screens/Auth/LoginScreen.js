@@ -11,42 +11,38 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import * as Svg from "react-native-svg";
-import ForgotSvg from '../assets/svg/forgot-person.svg'
-import Logo from "../assets/svg/Logo.svg";
-import { supabase } from "../lib/supabase";
+import * as Animatable from "react-native-animatable";
+import LoginSvg from "../../assets/svg/Login-person.svg";
+import Logo from "../../assets/svg/Logo.svg";
+import { supabase } from "../../lib/supabase";
 
 const dimension = Dimensions.get("window");
 const Width = dimension.width;
 const Height = dimension.height;
 
-const ForgotScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleForgotPassword = async () => {
-    try {
-      // Navigate to the ResetPassword screen
-      navigation.navigate('ResetPassword');
-      
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (error) {
-        // Handle errors (e.g., invalid email, rate limiting)
-        console.error('Error resetting password:', error);
-        if (error.message) {
-          alert(`An error occurred: ${error.message}`);
-        } else {
-          alert('An error occurred. Please try again later.');
-        }
-      } else {
-        alert('A password reset link has been sent to your email address.');
-      }
-    } catch (error) {
-      console.error('Unexpected error:', error);
-      alert('An unexpected error occurred. Please try again later.');
+    if (error) {
+      Alert.alert("Wrong Credentials");
+    } else {
+      setLoading(false);
+      Alert.alert("SignIn Successful!");
+      navigation.replace("HomeNavigator", {screen: 'Home'});
     }
   }
+
+
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
@@ -56,7 +52,7 @@ const ForgotScreen = ({ navigation }) => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -100}
       >
         <View style={styles.container}>
-        <View style={styles.topContainer}>
+          <View style={styles.topContainer}>
             <View
               style={{
                 flexDirection: "row",
@@ -70,13 +66,18 @@ const ForgotScreen = ({ navigation }) => {
               </Text>
             </View>
           </View>
-          <View style={styles.middleContainer}>
-          <ForgotSvg width={Width * 0.75} height={Height * 0.4} />
-          </View>
+          <Animatable.View
+            animation="fadeInDown"
+            style={styles.middleContainer}
+          >
+            <LoginSvg width={Width * 0.85} height={Height * 0.4} />
+          </Animatable.View>
 
-          <View style={styles.bottomContainer}>
-            <Text style={styles.subHeading}>Reset Password</Text>
-
+          <Animatable.View
+            animation="fadeInUp"
+            style={styles.bottomContainer}
+          >
+            <Text style={styles.subHeading}>SignIn</Text>
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -84,30 +85,43 @@ const ForgotScreen = ({ navigation }) => {
               keyboardType="email-address"
               value={email}
             />
-
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              secureTextEntry
+            />
             <TouchableOpacity
+              onPress={signInWithEmail}
               disabled={loading}
-              onPress={handleForgotPassword} // removed passing email argument
               style={styles.button}
             >
-              <Text style={styles.buttonText}>
-                {loading ? "Loading..." : "Send Link"}
-              </Text>
+              <Text style={{ fontSize: 16, color: "#ffffff" }}>Login</Text>
             </TouchableOpacity>
-          </View>
-          <Text style={styles.loginText}>
-            Remember your password?{" "}
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text style={styles.loginLink}>Login</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Forgot")}
+              style={{ paddingTop: 10 }}
+            >
+              <Text style={{ color: "#007bff" }}>Forgot your password?</Text>
             </TouchableOpacity>
-          </Text>
+          </Animatable.View>
+          <Animatable.Text
+            animation="fadeIn"
+            style={styles.registerText}
+          >
+            Don't have an account?
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <Text style={styles.registerLink}> Register</Text>
+            </TouchableOpacity>
+          </Animatable.Text>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
-export default ForgotScreen;
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -118,6 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   topContainer: {
+    flex: 0.5,
     flexDirection: "row",
     alignItems: "flex-start",
   },
@@ -127,6 +142,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 0.8,
   },
+
   input: {
     width: "100%",
     height: 50,
@@ -136,6 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
   },
+
   button: {
     width: "100%",
     height: 50,
@@ -144,10 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonText: {
-    fontSize: 16,
-    color: "#ffffff",
-  },
+
   bottomContainer: {
     flex: 1,
     backgroundColor: "#E2EAFC",
@@ -164,11 +178,11 @@ const styles = StyleSheet.create({
   subHeading: {
     fontSize: 26,
   },
-  loginText: {
+  registerText: {
     fontSize: 16,
     marginTop: 20,
   },
-  loginLink: {
+  registerLink: {
     color: "#007bff",
   },
 });

@@ -10,62 +10,42 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  Linking // Added Linking import
 } from "react-native";
-import * as Svg from "react-native-svg";
-import ResetSvg from '../assets/svg/Reset-person.svg'
-import Logo from "../assets/svg/Logo.svg";
-import { supabase } from "../lib/supabase";
+import ForgotSvg from '../../assets/svg/forgot-person.svg'
+import Logo from "../../assets/svg/Logo.svg";
+import { supabase } from "../../lib/supabase";
 
 const dimension = Dimensions.get("window");
 const Width = dimension.width;
 const Height = dimension.height;
 
-
-
-const ResetPasswordScreen = ({ navigation }) => {
-
-
+const ForgotScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleUpdatePassword = async () => {
-    // Trim the input and check for empty strings
-    const trimmedNewPassword = newPassword.trim();
-    const trimmedConfirmPassword = confirmPassword.trim();
-    
-    if (trimmedNewPassword !== trimmedConfirmPassword) {
-      Alert.alert("Passwords do not match!");
-      return;
-    }
-    
-    setLoading(true); // Set loading state to true
-  
+  const handleForgotPassword = async () => {
     try {
-      const session = supabase.auth.session();
-      if (!session) throw new Error('Not signed in');
-  
-      const { user, error } = await supabase.auth.updatePassword({
-        password: trimmedNewPassword,
-        accessToken: session.access_token,
-      });
-  
+      // Navigate to the ResetPassword screen
+      navigation.navigate('ResetPassword');
+      
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+
       if (error) {
-        console.error('Error updating password:', error);
-        alert('An error occurred. Please try again later.');
+        // Handle errors (e.g., invalid email, rate limiting)
+        console.error('Error resetting password:', error);
+        if (error.message) {
+          alert(`An error occurred: ${error.message}`);
+        } else {
+          alert('An error occurred. Please try again later.');
+        }
       } else {
-        alert('Password updated successfully!');
-        navigation.replace('Login');
+        alert('A password reset link has been sent to your email address.');
       }
     } catch (error) {
       console.error('Unexpected error:', error);
       alert('An unexpected error occurred. Please try again later.');
-    } finally {
-      setLoading(false); // Set loading state back to false regardless of success or failure
     }
-  };
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
@@ -75,7 +55,7 @@ const ResetPasswordScreen = ({ navigation }) => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -100}
       >
         <View style={styles.container}>
-          <View style={styles.topContainer}>
+        <View style={styles.topContainer}>
             <View
               style={{
                 flexDirection: "row",
@@ -90,32 +70,27 @@ const ResetPasswordScreen = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.middleContainer}>
-            <ResetSvg width={Width * 0.75} height={Height * 0.4} />
+          <ForgotSvg width={Width * 0.75} height={Height * 0.4} />
           </View>
+
           <View style={styles.bottomContainer}>
             <Text style={styles.subHeading}>Reset Password</Text>
 
             <TextInput
               style={styles.input}
-              placeholder="New Password"
-              onChangeText={(text) => setNewPassword(text)}
-              secureTextEntry={true}
-              value={newPassword}
+              placeholder="Email"
+              onChangeText={(text) => setEmail(text)}
+              keyboardType="email-address"
+              value={email}
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm New Password"
-              onChangeText={(text) => setConfirmPassword(text)}
-              secureTextEntry={true}
-              value={confirmPassword}
-            />
+
             <TouchableOpacity
               disabled={loading}
-              onPress={handleUpdatePassword} // Changed function name
+              onPress={handleForgotPassword} // removed passing email argument
               style={styles.button}
             >
               <Text style={styles.buttonText}>
-                {loading ? "Loading..." : "Update Password"}
+                {loading ? "Loading..." : "Send Link"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -131,7 +106,7 @@ const ResetPasswordScreen = ({ navigation }) => {
   );
 };
 
-export default ResetPasswordScreen;
+export default ForgotScreen;
 
 const styles = StyleSheet.create({
   container: {

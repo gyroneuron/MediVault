@@ -12,9 +12,9 @@ import {
   Platform,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import RegisterSvg from "../assets/svg/SignUp-person.svg";
-import Logo from "../assets/svg/Logo.svg";
-import { supabase } from '../lib/supabase';
+import RegisterSvg from "../../assets/svg/SignUp-person.svg";
+import Logo from "../../assets/svg/Logo.svg";
+import { supabase } from '../../lib/supabase';
 
 const dimension = Dimensions.get("window");
 const Width = dimension.width;

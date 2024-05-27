@@ -8,8 +8,8 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import Logo from "../assets/svg/Logo.svg";
-import DoctorSvg from "../assets/svg/start-dosctors.svg";
+import Logo from "../../assets/svg/Logo.svg";
+import DoctorSvg from "../../assets/svg/start-dosctors.svg";
 
 const dimension = Dimensions.get("window");
 const Width = dimension.width;
@@ -17,6 +17,10 @@ const Height = dimension.height;
 
 const StartScreen1 = ({ navigation }) => {
   const fadeInAnim = useRef(new Animated.Value(0)).current;
+
+  const handleStart = () => {
+    navigation.navigate('Phone');
+  }
 
   useEffect(() => {
     Animated.timing(fadeInAnim, {
@@ -47,7 +51,7 @@ const StartScreen1 = ({ navigation }) => {
           </Text>
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <TouchableOpacity onPress={() => handleStart()}>
             <Animated.View
               style={[styles.buttonContainer, { opacity: fadeInAnim }]}
             >

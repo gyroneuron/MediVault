@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "822504503073",
+    "project_id": "medivault-5a25d",
+    "storage_bucket": "medivault-5a25d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822504503073:android:7b76ac3c85380ad15b3060",
+        "android_client_info": {
+          "package_name": "com.gyroneuron.MediVault"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf6pEzexo3Mf58f5iqzIVj0WfI6h1uf1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
