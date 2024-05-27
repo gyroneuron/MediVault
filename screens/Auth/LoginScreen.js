@@ -37,7 +37,11 @@ const LoginScreen = ({ navigation }) => {
     } else {
       setLoading(false);
       Alert.alert("SignIn Successful!");
+<<<<<<< HEAD:screens/Auth/LoginScreen.js
       navigation.replace("HomeNavigator", {screen: 'Home'});
+=======
+      navigation.replace("Upload");
+>>>>>>> b7cd74bd2c43350105cb37efc1a5d976434cce61:screens/LoginScreen.js
     }
   }
 

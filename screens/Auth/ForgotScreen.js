@@ -11,9 +11,17 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+<<<<<<< HEAD:screens/Auth/ForgotScreen.js
 import ForgotSvg from '../../assets/svg/forgot-person.svg'
 import Logo from "../../assets/svg/Logo.svg";
 import { supabase } from "../../lib/supabase";
+=======
+import * as Animatable from "react-native-animatable";
+import LoginSvg from "../assets/svg/Login-person.svg";
+import Logo from "../assets/svg/Logo.svg";
+import { supabase } from "../lib/supabase";
+
+>>>>>>> b7cd74bd2c43350105cb37efc1a5d976434cce61:screens/NewLoginScreen.js
 
 const dimension = Dimensions.get("window");
 const Width = dimension.width;
@@ -30,6 +38,7 @@ const ForgotScreen = ({ navigation }) => {
       
       const { error } = await supabase.auth.resetPasswordForEmail(email);
 
+<<<<<<< HEAD:screens/Auth/ForgotScreen.js
       if (error) {
         // Handle errors (e.g., invalid email, rate limiting)
         console.error('Error resetting password:', error);
@@ -44,6 +53,14 @@ const ForgotScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Unexpected error:', error);
       alert('An unexpected error occurred. Please try again later.');
+=======
+    if (error) {
+      Alert.alert("Wrong Credentials");
+    } else {
+      setLoading(false);
+      Alert.alert("SignIn Successful!");
+      navigation.replace("Upload");
+>>>>>>> b7cd74bd2c43350105cb37efc1a5d976434cce61:screens/NewLoginScreen.js
     }
   }
 

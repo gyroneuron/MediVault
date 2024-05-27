@@ -39,10 +39,16 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+<<<<<<< HEAD
     "extra": {
       "eas": {
         "projectId": "b98692a2-41e0-4f85-8024-5b62b0d1d15d"
       }
     }
+=======
+    "plugins": [
+      "expo-secure-store"
+    ]
+>>>>>>> b7cd74bd2c43350105cb37efc1a5d976434cce61
   }
 }
